@@ -1,0 +1,6 @@
+rootProject.name = 'plugin-runner'
+include 'plugins:geo-plugin'
+include 'plugins:wiki-plugin'
+include 'plugins:math-plugin'
+include 'runner'
+
