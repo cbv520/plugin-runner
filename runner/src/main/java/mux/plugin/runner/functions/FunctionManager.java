@@ -11,9 +11,15 @@ import java.util.regex.Pattern;
 @Slf4j
 public class FunctionManager {
 
+    private static final String wordRegex = "[a-zA-Z][a-zA-Z0-9]*";
+    private static final String functionNameRegex = wordRegex + ":" + wordRegex;
+    private static final String functionCallRegex = "^("+functionNameRegex+")\\((.*)\\)$";
+    private static final Pattern functionCallPattern = Pattern.compile(functionCallRegex);
+
     private final Map<String, Function<Object, Object>> functions = new HashMap<>();
 
     public <T,R> void register(String functionName, Function<T,R> function) {
+        log.info("Adding function: {}", functionName);
         functions.put(functionName, (Function<Object, Object>) function);
     }
 
@@ -27,11 +33,7 @@ public class FunctionManager {
     }
 
     public Object parse(String str) {
-        String wordRegex = "[a-zA-Z][a-zA-Z0-9]*";
-        String functionNameRegex = wordRegex + ":" + wordRegex;
-        String functionCallRegex = "^("+functionNameRegex+")\\((.*)\\)";
-        Pattern p = Pattern.compile(functionCallRegex);
-        Matcher m = p.matcher(str);
+        Matcher m = functionCallPattern.matcher(str);
         if (!m.matches()) {
             return null;
         }

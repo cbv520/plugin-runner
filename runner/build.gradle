@@ -28,11 +28,13 @@ test {
     useJUnitPlatform()
 }
 
-tasks.register('copyReport2', Copy) {
+tasks.register('copyPlugins', Copy) {
     from fileTree("$rootDir/plugins").files
     include "**/*.jar"
     into "src/main/resources/plugins"
 }
 
-
-assemble.dependsOn copyReport2
+assemble.dependsOn copyPlugins
+assemble.dependsOn ':plugins:geo-plugin:build'
+assemble.dependsOn ':plugins:wiki-plugin:build'
+assemble.dependsOn ':plugins:math-plugin:build'
